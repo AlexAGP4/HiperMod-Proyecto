@@ -4,6 +4,8 @@
 
 //constantes
 #define TAM 10
+#define TAMCAR 30
+#define CLIENT 10
 
 //definicion de estructuras globales
 struct productos{
@@ -13,7 +15,14 @@ struct productos{
 	int stock;
 	float precio;
 
-}prod[TAM];
+}prod[TAM], carrito[TAMCAR];
+
+struct personas{
+
+	char nombre[10];
+	struct productos carrito[TAMCAR];
+
+}clientes[CLIENT];
 
 
 //declaracion de Funciones
@@ -163,4 +172,10 @@ void crearProductos()
 	strcpy (prod[9].descripcion, "Arroz");
 	prod[9].stock=20;
 	prod[9].precio=30;
+}
+
+void cargarClientes 
+{
+	strcpy(clientes[0].nombre, "Cliente 1")
+	
 }
