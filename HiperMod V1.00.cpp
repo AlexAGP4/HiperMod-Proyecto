@@ -9,7 +9,7 @@ using namespace std;
 
 
 //definicion de estructuras globales
-//nodos
+//nodos de pila para el carrito
 struct Nodo
 {
 	char nombreProducto [15];
@@ -28,12 +28,11 @@ struct productos{
 } prod[TAM];
 
 //personas
-struct personas
-{
+struct personas{
 int idCliente;
 Nodo *carrito [TAM];
 int totalArticulos;
-}cliente[TAM];
+} cliente[TAM];
 
 //declaracion de Funciones
 void crearProductos();
@@ -62,8 +61,6 @@ int main()
   switch (opc)
 	    {
 	        case 1:
-		        system("cls");
-		        cout<<"\n\n PRUEBA Funcion Compra\n\n\n\n";
             //lamada a la funcion
             Compras();
 		        system("pause");
@@ -148,7 +145,7 @@ void Compras()
       cout << " \n Introduzca su opcion: ";
       fflush(stdin);
       cin >> opc;
-      printf("\nUsted Selecciono el numero: %d\n\n", opc);
+
       switch (opc)
         {
           case 1:
@@ -274,11 +271,10 @@ void seleccionProductos(personas cliente[],productos prod[])
   bool band=false;
   if (cliente[cliente[ncliente].idCliente].totalArticulos>=0 && cliente[cliente[ncliente].idCliente].totalArticulos<30)
   {
-
-  
     // seleccion de producto y validacion de codigo correcto
     do
     {
+      system("cls");
       listaProductos();
       cout << "\n\n Porfavor escriba el codigo del producto que desea meter al carrito: ";
       fflush(stdin);
@@ -293,6 +289,13 @@ void seleccionProductos(personas cliente[],productos prod[])
           goto VALI1;
         }
       }
+
+      if (band == false)
+      {
+        cout<<"\nEste producto no existe, elija uno de la lista!\n";
+        system("pause");
+      }
+
       VALI1:
       if (band==true)
       {
@@ -307,7 +310,6 @@ void seleccionProductos(personas cliente[],productos prod[])
       } 
     }while (band == false);
     VALI:
-    cout << "\n\nya salio del for";
     system("pause");
     totalArticulos = 0;
     totalArticulos += cantProducto;
@@ -320,61 +322,61 @@ void seleccionProductos(personas cliente[],productos prod[])
       int controlSCH= (int) strtol(idProducto,NULL,10);
       switch (controlSCH)
       { 
-        case 1001: cout<<"producto 1001 \n";
+        case 1001:
         strcpy (nuevo_nodo->nombreProducto,prod[0].descripcion);
         nuevo_nodo->precioProducto=prod[0].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[0].precio;
         break;
-        case 1002: cout<<"hjola mundo 1002 \n";
+        case 1002:
         strcpy (nuevo_nodo->nombreProducto,prod[1].descripcion);
         nuevo_nodo->precioProducto=prod[1].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[1].precio;
         break;
-        case 1003:cout<<"hjola mundo 1003 \n";
+        case 1003:
         strcpy (nuevo_nodo->nombreProducto,prod[2].descripcion);
         nuevo_nodo->precioProducto=prod[2].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[2].precio;
         break;
-        case 1004:cout<<"hjola mundo 1004 \n";
+        case 1004:
         strcpy (nuevo_nodo->nombreProducto,prod[3].descripcion);
         nuevo_nodo->precioProducto=prod[3].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[3].precio;
         break;
-        case 1005:cout<<"hjola mundo 1005 \n";
+        case 1005:
         strcpy (nuevo_nodo->nombreProducto,prod[4].descripcion);
         nuevo_nodo->precioProducto=prod[4].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[4].precio;
         break;
-        case 1006:cout<<"hjola mundo 1006 \n";
+        case 1006:
         strcpy (nuevo_nodo->nombreProducto,prod[5].descripcion);
         nuevo_nodo->precioProducto=prod[5].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[5].precio;
         break;
-        case 1007:cout<<"hjola mundo 1007 \n";
+        case 1007:
         strcpy (nuevo_nodo->nombreProducto,prod[6].descripcion);
         nuevo_nodo->precioProducto=prod[6].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[6].precio;
         break;
-        case 1008:cout<<"hjola mundo 1008 \n";
+        case 1008:
         strcpy (nuevo_nodo->nombreProducto,prod[7].descripcion);
         nuevo_nodo->precioProducto=prod[7].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[7].precio;
         break;
-        case 1009:cout<<"hjola mundo 1009 \n";
+        case 1009:
         strcpy (nuevo_nodo->nombreProducto,prod[8].descripcion);
         nuevo_nodo->precioProducto=prod[8].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[8].precio;
         break;
-        case 1010:cout<<"hjola mundo 1010 \n";
+        case 1010:
         strcpy (nuevo_nodo->nombreProducto,prod[9].descripcion);
         nuevo_nodo->precioProducto=prod[9].precio;
         nuevo_nodo->cantidadProducto=cantProducto;
@@ -383,9 +385,9 @@ void seleccionProductos(personas cliente[],productos prod[])
       
       
       } 
-    
+
       system("cls");
-      cout<<"\narticulo AGG CORRECTAMENTE al carrito: ";
+      cout<<"\nArticulo añadido con exito al carrito!: ";
       cout<<"\n nombre: "<<nuevo_nodo->nombreProducto;
       cout<<"\n precio producto: "<<nuevo_nodo->precioProducto;
       cout<<" \n cantidad: "<<nuevo_nodo->cantidadProducto;
@@ -397,10 +399,6 @@ void seleccionProductos(personas cliente[],productos prod[])
     
     //asignamos nuevo nodo a pila para que pila apunte ahora al tope
     *cliente[cliente[ncliente].idCliente].carrito = nuevo_nodo;
-    
-
-    
-    cout << "\n\nproductos agg correctamente a la pila\n\n";
   }
 }
 
