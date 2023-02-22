@@ -7,7 +7,6 @@ using namespace std;
 //constantes
 #define TAM 10
 
-
 //definicion de estructuras globales
 //nodos de pila para el carrito
 struct Nodo
@@ -41,13 +40,16 @@ void Compras();
 void listaProductos();
 void seleccionProductos(personas[],productos[]);
 void pagar(personas cliente[]);
+//void modificar(personas [], productos[]);
+void agregar(personas [], productos[]);
+void quitar(personas [], productos[]); 
 
 
 // variables globales
 int opc = 0;
 int ncliente = 0;
- Nodo *pila = NULL;
- Nodo auxiliar;
+Nodo *pila = NULL;
+Nodo auxiliar;
 
 /*------------------------------------------
 			funcion Principal
@@ -61,33 +63,33 @@ int main()
   switch (opc)
 	    {
 	        case 1:
-            //lamada a la funcion
+            //llamada a la funcion
             Compras();
 		        system("pause");
 		        opc=0;
 		        break;
 	        case 2:
-	            system("cls");
-	            cout<<"\nPRUEBA Funcion ver lista de Productos\n\n";
-              listaProductos();
-              system("pause");
-	            opc=0;
-	            break;
+	          system("cls");
+	          cout<<"\nPRUEBA Funcion ver lista de Productos\n\n";
+            listaProductos();
+            system("pause");
+	          opc=0;
+	          break;
 	        case 3:
-	           	system("cls");
+	          system("cls");
 	        	cout<<"\n\n\nPRUEBA Funcion Generar Reporte\n\n\n\n";
 	        	system("pause");
 	        	opc=0;
-	            break;
+	          break;
 	        case 4:
-				exit (-1);
-				break;
-	        default:
-	           	system("cls");
-	           	cout<<" \n\n \x1b[31mDATO INVALIDO!\n\n Porfavor introduzca un digito entre el 1 y 4\x1b[0m\n\n\n\n\n";
-	          	system("pause");
-              cin.clear();
-	           	opc=0;    
+				    exit (-1);
+				    break;
+	          default:
+	          system("cls");
+	          cout<<" \n\n \x1b[31mDATO INVALIDO!\n\n Porfavor introduzca un digito entre el 1 y 4\x1b[0m\n\n\n\n\n";
+	          system("pause");
+            cin.clear();
+	          opc=0;    
 	    }
       }while (opc==0);
 
@@ -125,7 +127,7 @@ void Compras()
   opc = 0;
   for (ncliente=0; ncliente < TAM-8; ncliente++)
   {
-  *cliente[cliente[ncliente].idCliente].carrito=NULL;
+    *cliente[cliente[ncliente].idCliente].carrito=NULL;
     cliente[ncliente].idCliente = ncliente + 1;
     do
     {
@@ -150,22 +152,21 @@ void Compras()
         {
           case 1:
             system("cls");
-            cout << "\n\n PRUEBA SELECCIONAR PRODUCTOS\n\n\n\n";
             seleccionProductos(cliente,prod);
             system("pause");
             opc = 0;
             break;
           case 2:
             system("cls");
-            cout << "\n\n\n Prueba Modificar Carrito\n\n\n\n";
-            cout << "\n\n";
+            agregar(cliente, prod);
+            //modificar(cliente, prod);
+            cout<<"\n";
             system("pause");
             opc = 0;
             break;
           case 3:
             system("cls");
-            cout << "\n\n\n Prueba Pagar\n\n\n\n";
-            		pagar(cliente);
+            pagar(cliente);
             system("pause");
             opc = 0;
             break;
@@ -261,7 +262,6 @@ void listaProductos()
 	cout<<"\n";
 }
 
-
 //FUNCION LLENADO DEL CARRITO
 void seleccionProductos(personas cliente[],productos prod[])
 {
@@ -269,11 +269,15 @@ void seleccionProductos(personas cliente[],productos prod[])
   int cantProducto;
   int totalArticulos;
   bool band=false;
-  if (cliente[cliente[ncliente].idCliente].totalArticulos>=0 && cliente[cliente[ncliente].idCliente].totalArticulos<30)
-  {
+
+  //validacion pila vacia
+  if (*cliente[cliente[ncliente].idCliente].carrito == NULL)
+	{
+	
     // seleccion de producto y validacion de codigo correcto
     do
     {
+      VALI2:
       system("cls");
       listaProductos();
       cout << "\n\n Porfavor escriba el codigo del producto que desea meter al carrito: ";
@@ -305,22 +309,21 @@ void seleccionProductos(personas cliente[],productos prod[])
           fflush(stdin);
           cin >> cantProducto;
           cin.clear();
-        } while (((!(cantProducto <= 5 && cantProducto > 0))&&(cliente[cliente[ncliente].idCliente].totalArticulos>=0 && cliente[cliente[ncliente].idCliente].totalArticulos<30)));
+        } while (!(cantProducto <= 5 && cantProducto > 0));
         goto VALI;
       } 
-    }while (band == false);
+    }while (band==false);
     VALI:
     system("pause");
     totalArticulos = 0;
     totalArticulos += cantProducto;
 
-
     //creacion del nuevo nodo
     Nodo *nuevo_nodo = new Nodo();
     
-    // llenamos los datos que correspponden al nodo
-      int controlSCH= (int) strtol(idProducto,NULL,10);
-      switch (controlSCH)
+    //llenamos los datos que correspponden al nodo
+    int controlSCH= (int) strtol(idProducto,NULL,10);
+    switch (controlSCH)
       { 
         case 1001:
         strcpy (nuevo_nodo->nombreProducto,prod[0].descripcion);
@@ -382,23 +385,25 @@ void seleccionProductos(personas cliente[],productos prod[])
         nuevo_nodo->cantidadProducto=cantProducto;
         nuevo_nodo->preciototalProducto=cantProducto*prod[9].precio;
         break;
-      
-      
       } 
-
-      system("cls");
-      cout<<"\nArticulo añadido con exito al carrito!: ";
-      cout<<"\n nombre: "<<nuevo_nodo->nombreProducto;
-      cout<<"\n precio producto: "<<nuevo_nodo->precioProducto;
-      cout<<" \n cantidad: "<<nuevo_nodo->cantidadProducto;
-      cout<<"\n precio total: "<<nuevo_nodo->preciototalProducto;
+      cout<<"\nArticulo agregado exitosamente al cAarrito!: ";
       
+      //llenamos el ultimo dato del nodo el cual es el "siguiente" que se encarga de apuntar al nodo anterior
+      nuevo_nodo->siguiente = *cliente[cliente[ncliente].idCliente].carrito;
       
-    // llenamos el ultimo dato del nodo el cual es el "siguiente" que se encarga de apuntar al nodo anterior
-    nuevo_nodo->siguiente = *cliente[cliente[ncliente].idCliente].carrito;
-    
-    //asignamos nuevo nodo a pila para que pila apunte ahora al tope
-    *cliente[cliente[ncliente].idCliente].carrito = nuevo_nodo;
+      //asignamos nuevo nodo a pila para que pila apunte ahora al tope
+      *cliente[cliente[ncliente].idCliente].carrito = nuevo_nodo;
+      int seguir = 0;
+      cout << "\nDesea seguir agregando articulos? SI=1 y NO=0";
+      cout << "\n: ";
+      cin>>seguir;
+      if (seguir==1)
+      {
+        goto VALI2;
+      } 
+  } else
+  {
+    cout <<"\n\nSu carrito ya tiene articulos, valla a la opcion (2)Modificar carrito";
   }
 }
 
@@ -412,30 +417,189 @@ void pagar(personas cliente[])
 	}
 	else
 	{
-	//esta variable se crea para respaldar la direccion de memoria de pila
+	  //esta variable se crea para respaldar la direccion de memoria de pila
     Nodo *aux1=*cliente[cliente[ncliente].idCliente].carrito;
     // validacion  fondo de la pila
+    cout << "--------------articulos en lista--------------\n";
+    cout << "------------------------------------------------";
     while (aux1 != NULL)
     {
-    	//impresion de datos
-    cout << "\nProducto: #" << nProductos;
-		cout<<"\n nombre: "<<aux1->nombreProducto;
-		cout<<"\n precio producto: "<<aux1->precioProducto;
-		cout<<" \n cantidad: "<<aux1->cantidadProducto;
-		cout<<"\n precio total: "<<aux1->preciototalProducto;
-    cout<<"\n\nDatos mostrados correctamente";
+      //impresion de datos
+      cout << "\nProducto: #" << nProductos;
+      cout<<"\n nombre: "<<aux1->nombreProducto;
+      cout<<"\n precio producto: "<<aux1->precioProducto;
+      cout<<" \n cantidad: "<<aux1->cantidadProducto;
+      cout<<"\n precio total: "<<aux1->preciototalProducto;
+
+      //se avanza al siguiente nodo de la pila
+	    aux1 = aux1->siguiente;
     
-    //se avanza al siguiente noso de la pila
-	aux1 = aux1->siguiente;
-    
-    //contador de productos mostrados
-	nProductos++;
-    cout <<"\n";
-    system ("pause");
-    
-    
+     //contador de productos mostrados
+	    nProductos++;
+       cout <<"\n";
     }
-    
+    cout<<"\n\nDatos mostrados correctamente";
     cout<<"\n";
+    system ("pause");
+  }
 }
+
+// FUNCION PARA MODIFICAR LOS PRODUCTOS EN EL CARRITO
+//void modificar(personas cliente[], productos[])
+
+// Agregar nuevo producto a la pila
+void agregar(personas [], productos[])
+{
+
+  if (*cliente[cliente[ncliente].idCliente].carrito == NULL)
+  {
+    cout<<"El carrito esta vacio. Para llenarlo debe ir a la opcion (1) Elegir productos. ";
+  }
+  else
+  {
+    char idProducto[5];
+    int cantProducto;
+    int totalArticulos;
+    bool band=false;
+	
+    // seleccion de producto y validacion de codigo correcto
+    do
+    {
+      VALI2:
+      system("cls");
+      listaProductos();
+      cout << "\n\n Porfavor escriba el codigo del producto que desea meter al carrito: ";
+      fflush(stdin);
+      cin >> idProducto;
+      
+      // Encuentra el codigo producto y valida que el codigo exista
+      for (int j = 0; j < TAM; j++)
+      {
+        if (strcmp(idProducto, prod[j].id) == 0)
+        {
+          band = true;
+          goto VALI1;
+        }
+      }
+
+      if (band == false)
+      {
+        cout<<"\nEste producto no existe, elija uno de la lista!\n";
+        system("pause");
+      }
+
+      VALI1:
+      if (band==true)
+      {
+        do
+        {
+          cout << "\n\n Porfavor escriba la cantidad de producto a llevar \n\x1b[31mMaximo 5 por producto!\n Cantidad:\x1b[0m  ";
+          fflush(stdin);
+          cin >> cantProducto;
+          cin.clear();
+        } while (!(cantProducto <= 5 && cantProducto > 0));
+        goto VALI;
+      } 
+    }while (band==false);
+    VALI:
+    system("pause");
+    totalArticulos = 0;
+    totalArticulos += cantProducto;
+
+    //creacion del nuevo nodo
+    Nodo *nuevo_nodo = new Nodo();
+    
+    //llenamos los datos que correspponden al nodo
+    int controlSCH= (int) strtol(idProducto,NULL,10);
+    switch (controlSCH)
+      { 
+        case 1001:
+        strcpy (nuevo_nodo->nombreProducto,prod[0].descripcion);
+        nuevo_nodo->precioProducto=prod[0].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[0].precio;
+        break;
+        case 1002:
+        strcpy (nuevo_nodo->nombreProducto,prod[1].descripcion);
+        nuevo_nodo->precioProducto=prod[1].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[1].precio;
+        break;
+        case 1003:
+        strcpy (nuevo_nodo->nombreProducto,prod[2].descripcion);
+        nuevo_nodo->precioProducto=prod[2].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[2].precio;
+        break;
+        case 1004:
+        strcpy (nuevo_nodo->nombreProducto,prod[3].descripcion);
+        nuevo_nodo->precioProducto=prod[3].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[3].precio;
+        break;
+        case 1005:
+        strcpy (nuevo_nodo->nombreProducto,prod[4].descripcion);
+        nuevo_nodo->precioProducto=prod[4].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[4].precio;
+        break;
+        case 1006:
+        strcpy (nuevo_nodo->nombreProducto,prod[5].descripcion);
+        nuevo_nodo->precioProducto=prod[5].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[5].precio;
+        break;
+        case 1007:
+        strcpy (nuevo_nodo->nombreProducto,prod[6].descripcion);
+        nuevo_nodo->precioProducto=prod[6].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[6].precio;
+        break;
+        case 1008:
+        strcpy (nuevo_nodo->nombreProducto,prod[7].descripcion);
+        nuevo_nodo->precioProducto=prod[7].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[7].precio;
+        break;
+        case 1009:
+        strcpy (nuevo_nodo->nombreProducto,prod[8].descripcion);
+        nuevo_nodo->precioProducto=prod[8].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[8].precio;
+        break;
+        case 1010:
+        strcpy (nuevo_nodo->nombreProducto,prod[9].descripcion);
+        nuevo_nodo->precioProducto=prod[9].precio;
+        nuevo_nodo->cantidadProducto=cantProducto;
+        nuevo_nodo->preciototalProducto=cantProducto*prod[9].precio;
+        break;
+      } 
+      cout<<"\nArticulo agregado exitosamente al cAarrito!: ";
+      
+      //llenamos el ultimo dato del nodo el cual es el "siguiente" que se encarga de apuntar al nodo anterior
+      nuevo_nodo->siguiente = *cliente[cliente[ncliente].idCliente].carrito;
+      
+      //asignamos nuevo nodo a pila para que pila apunte ahora al tope
+      *cliente[cliente[ncliente].idCliente].carrito = nuevo_nodo;
+      int seguir = 0;
+      cout << "\nDesea seguir agregando articulos? SI=1 y NO=0";
+      cout << "\n: ";
+      cin>>seguir;
+      if (seguir==1)
+      {
+        goto VALI2;
+      }
+  }
+}
+
+void quitar(personas [], productos[])
+{
+  if (*cliente[cliente[ncliente].idCliente].carrito == NULL)
+  {
+    cout<<"El carrito esta vacio. No hay productos que eliminar. ";
+  }
+  else 
+  {
+    
+  }
 }
