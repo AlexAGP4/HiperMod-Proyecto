@@ -27,7 +27,6 @@ void imprimir();
 int cantNodos();
 int vacia();
 int primerNodo();
-void modificarNodo(int);
 
 int main(){
 
@@ -249,78 +248,5 @@ int primerNodo()
         return primero;
         
     }
-
-}
-
-void modificarNodo(int n)
-{
-    Nodo *temp_ptr = new Nodo();
-    Nodo *pila_rpld = new Nodo();
-    Nodo *pila_aux = new Nodo();
-    Nodo *aqui;
-    temp_ptr = cima;
-    pila_rpld = NULL;
-    pila_aux = NULL;
-    aqui = cima;
-    
-    
-
-    /*
-    Esta funcion debe permitir buscar cualquier valor dentro de la pila
-    para eliminarlo sin borrar el resto de datos.
-    pasos:
-    1. Buscar el nodo (comparando el dato proporcionado con los datos dentro de la pila).
-        antes de cada iteración se deben extraer los datos y guardarse en una pila auxiliar.
-    2. Una vez encontrado el nodo eliminarlo de la pila.
-    3. Llenar nuevamente la pila original con los datos resguardados en la pila auxiliar
-    */
-
-   if (vacia()==1)
-   {
-        cout<<"La pila esta vacia";
-   }
-   else
-   {
-    
-        while (aqui->dato != n && aqui->sig != NULL)
-        {
-            if (pila_aux == NULL)
-            {
-                pila_rpld->dato = temp_ptr->dato;
-                pila_rpld->sig = NULL;
-            }
-            else
-            {
-                pila_aux->dato = temp_ptr->dato;
-                pila_aux->sig = pila_rpld;
-                pila_rpld = pila_aux;
-
-            }
-            
-            temp_ptr = temp_ptr->sig;
-            aqui = aqui->sig;
-            
-        }
-
-        if (aqui->dato == n)
-        {
-
-            temp_ptr = temp_ptr->sig;
-
-            
-            //aqui=NULL;
-
-            temp_ptr->dato = pila_aux->dato;
-            temp_ptr->sig = aux_ptr;
-            //aux_ptr=NULL;
-
-            cout<<"Nodo eliminado con exito";
-        }
-        else
-        {
-            cout<<"El nodo no existe en la pila";
-        }
-
-   }
 
 }
