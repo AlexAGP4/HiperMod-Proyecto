@@ -422,8 +422,6 @@ void modificarCarrito(Nodo *&cliente)
       Carro *aux2 = new Carro();
       aux = pila;
       aux2->idArticulo = aux->idArticulo;
-      aux2->nombreProducto = aux->nombreProducto;
-      aux2->precio = aux->precio;
       aux2->Car_Prod_T = aux->Car_Prod_T;
       aux2->sig = pila_aux;
       pila_aux = aux2;
@@ -449,8 +447,6 @@ void modificarCarrito(Nodo *&cliente)
       Carro *aux2 = new Carro();
       aux = pila_aux;
       aux2->idArticulo = aux->idArticulo;
-      aux2->nombreProducto = aux->nombreProducto;
-      aux2->precio = aux->precio;
       aux2->Car_Prod_T = aux->Car_Prod_T;
       aux2->sig = pila;
       pila = aux2;
@@ -680,21 +676,17 @@ void animacionPresentacion ()
 
 void imprimirCarrito(Nodo *&cliente)
 {
-  Carro *nodo_aux = new Carro();
+  //Carro *nodo_aux = new Carro();
 
-  nodo_aux = cliente->carrito;
-
-  if (nodo_aux != NULL)
+  if (cliente->carrito != NULL)
   {
-    while (nodo_aux != NULL)
+    while (cliente->carrito != NULL)
     {
       cout<<"----------------------------\n";
-      cout<<"|"<<nodo_aux->idArticulo<<"|\n";
-      cout<<"|"<<nodo_aux->nombreProducto<<"|\n";
-      cout<<"|"<<nodo_aux->precio<<"|\n";
-      cout<<"|"<<nodo_aux->Car_Prod_T<<"|\n";
+      cout<<"|"<<cliente->carrito->idArticulo<<"|\n";
+      cout<<"|"<<cliente->carrito->Car_Prod_T<<"|\n";
       cout<<"----------------------------\n";
-      nodo_aux = nodo_aux -> sig;
+      cliente->carrito = cliente->carrito->sig;
       cout<<"\n";
 
     }

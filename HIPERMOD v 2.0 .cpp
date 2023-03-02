@@ -37,6 +37,7 @@ void crearProductos();
 void crearClientesCola(Nodo *&, Nodo *&);
 void compra(Nodo *&); //esto va a recibir es el frente y el fin de la cola
 void modificarCarrito(Nodo *&);
+void imprimirCarrito(Nodo *&);
 void verClientesCola(Nodo *&);
 void generarReporte(Nodo *&);
 bool buscarIdProducto(Carro *&, int);
@@ -186,6 +187,12 @@ void menucompra (Nodo*& frente)
                       Sleep(1000);
                       break;
                     }
+                    break;
+                    case 5: 
+                    system ("cls");
+                    imprimirCarrito(client);
+                    system("pause");
+                    opc=0;
                     break;
                   default:
                     system("cls");
@@ -448,6 +455,26 @@ void modificarCarrito(Nodo *&cliente)
     cout<<"\nPila transportada correctamente\n";
     system("pause");
 
+  }
+
+}
+
+void imprimirCarrito(Nodo *&cliente)
+{
+  //Carro *nodo_aux = new Carro();
+
+  if (cliente->carrito != NULL)
+  {
+    while (cliente->carrito != NULL)
+    {
+      cout<<"----------------------------\n";
+      cout<<"|"<<cliente->carrito->idArticulo<<"|\n";
+      cout<<"|"<<cliente->carrito->Car_Prod_T<<"|\n";
+      cout<<"----------------------------\n";
+      cliente->carrito = cliente->carrito->sig;
+      cout<<"\n";
+
+    }
   }
 
 }
